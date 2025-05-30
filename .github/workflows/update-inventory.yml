@@ -1,0 +1,79 @@
+name: Update Tire Inventory
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # Run daily at noon UTC
+  workflow_dispatch: # Manual trigger
+  workflow_run:
+    workflows: ["Deploy static content to Pages"]
+    types: [completed]
+  push:
+    branches: ["main"]
+  # Trigger after Pages workflow completes (when Power Automate updates CSV)
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  update-inventory:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Check if should run
+      id: should-run
+      run: |
+        # Always run on manual trigger or schedule
+        if [[ "${{ github.event_name }}" == "workflow_dispatch" || "${{ github.event_name }}" == "schedule" ]]; then
+          echo "should_run=true" >> $GITHUB_OUTPUT
+          echo "Running due to manual trigger or schedule"
+          exit 0
+        fi
+        
+        # Check if CSV file was modified in recent commits
+        if git log --since="10 minutes ago" --name-only --pretty=format: | grep -q "flyer_data.csv"; then
+          echo "should_run=true" >> $GITHUB_OUTPUT
+          echo "CSV file was recently updated"
+        else
+          echo "should_run=false" >> $GITHUB_OUTPUT
+          echo "No recent CSV changes detected"
+        fi
+        
+    - name: Debug - List files
+      if: steps.should-run.outputs.should_run == 'true'
+      run: |
+        echo "Current directory:"
+        ls -la
+        echo "CSV file check:"
+        ls -la *.csv || echo "No CSV files found"
+        echo "CSV file content preview:"
+        head -5 flyer_data.csv || echo "Cannot read CSV"
+        
+    - name: Run inventory update
+      if: steps.should-run.outputs.should_run == 'true'
+      run: node .github/workflows/update-inventory.js
+      
+    - name: Check for changes
+      if: steps.should-run.outputs.should_run == 'true'
+      id: git-check
+      run: |
+        git diff --exit-code index.html || echo "changes=true" >> $GITHUB_OUTPUT
+        
+    - name: Commit and push updated index.html
+      if: steps.git-check.outputs.changes == 'true'
+      run: |
+        git config --local user.name "Tire Bot"
+        git config --local user.email "bot@sturgeon-tire.com"
+        git add index.html
+        git commit -m "🤖 Auto-update tire inventory $(date +'%Y-%m-%d %H:%M')"
+        git push
