@@ -159,18 +159,22 @@ function generateHTML(items) {
   }
 }
 
-      @media (max-width:768px){
-        .quote-modal-content{
-          width: calc(100% - 24px);
-          margin: 5% auto;
-          box-sizing:border-box;
-          padding-left:12px;
-          padding-right:12px;
-        }
-        .quote-item{flex-direction:column;align-items:stretch;gap:8px}
-        .quote-item-controls{align-self:flex-start}
-        .quantity-controls{justify-content:flex-start}
+  @media (max-width:768px){
+      .quote-modal-content{
+        width: calc(100% - 24px);
+        margin: 5% auto;
+        box-sizing:border-box;
+        padding:12px;
       }
+      .quote-item{flex-direction:column;align-items:stretch;gap:8px;padding:10px 0}
+      .quote-item-info{font-size:15px;flex:1;min-width:0;margin-bottom:8px}
+      .quote-item-controls{flex-shrink:0;display:flex;justify-content:space-between;align-items:center}
+      .quantity-controls{background:#f8f9fa;padding:4px;gap:3px;border-radius:6px}
+      .qty-btn{width:30px;height:30px;font-size:16px}
+      .qty-input{width:45px;height:30px;font-size:14px}
+      .qty-stock{font-size:12px;line-height:30px;margin-left:6px}
+      .remove-item{padding:4px 8px;font-size:11px}
+    }
   
 
   #quote-items{
@@ -406,32 +410,32 @@ function generateHTML(items) {
       }
     }
 
-    function updateQuoteModal() {
-      var container = document.getElementById('quote-items');
-      if (quoteItems.length === 0) {
-        container.innerHTML = '<p>No items in quote yet.</p>';
-        return;
-      }
-      var html = '<h3>Items:</h3>';
-      quoteItems.forEach(function(item) {
-        html += '<div class="quote-item">' +
-          '<div class="quote-item-info">' +
-          '<strong>' + escapeHtml(item.manufacturer) + ' ' + escapeHtml(item.model) + '</strong><br>' +
-          'Item: ' + escapeHtml(item.item) + ' • $' + item.sale + ' each' +
-          '</div>' +
-          '<div class="quote-item-controls">' +
-          '<div class="quantity-controls">' +
-          '<button class="qty-btn" onclick="updateQuantity(\\'' + escapeHtml(item.item) + '\\', ' + (item.quantity - 1) + ')">−</button>' +
-          '<input type="number" class="qty-input" min="1" max="' + item.stock + '" value="' + item.quantity + '" onchange="updateQuantity(\\'' + escapeHtml(item.item) + '\\', this.value)">' +
-          '<button class="qty-btn" onclick="updateQuantity(\\'' + escapeHtml(item.item) + '\\', ' + (item.quantity + 1) + ')">+</button>' +
-          '<span class="qty-stock">/ ' + item.stock + '</span>' +
-          '</div>' +
-          '<button class="remove-item" onclick="removeFromQuote(\\'' + escapeHtml(item.item) + '\\')">×</button>' +
-          '</div>' +
-          '</div>';
-      });
-      container.innerHTML = html;
+  function updateQuoteModal() {
+    var container = document.getElementById('quote-items');
+    if (quoteItems.length === 0) {
+      container.innerHTML = '<p>No items in quote yet.</p>';
+      return;
     }
+    var html = '<h3>Items:</h3>';
+    quoteItems.forEach(function(item) {
+      html += '<div class="quote-item">' +
+        '<div class="quote-item-info">' +
+        '<strong>' + escapeHtml(item.manufacturer) + ' ' + escapeHtml(item.model) + '</strong><br>' +
+        'Item: ' + escapeHtml(item.item) + ' • $' + item.sale + ' each' +
+        '</div>' +
+        '<div class="quote-item-controls">' +
+        '<div class="quantity-controls">' +
+        '<button class="qty-btn" onclick="updateQuantity(\'' + escapeHtml(item.item) + '\', ' + (item.quantity - 1) + ')">−</button>' +
+        '<input type="number" class="qty-input" min="1" max="' + item.stock + '" value="' + item.quantity + '" onchange="updateQuantity(\'' + escapeHtml(item.item) + '\', this.value)">' +
+        '<button class="qty-btn" onclick="updateQuantity(\'' + escapeHtml(item.item) + '\', ' + (item.quantity + 1) + ')">+</button>' +
+        '<span class="qty-stock">/ ' + item.stock + '</span>' +
+        '</div>' +
+        '<button class="remove-item" onclick="removeFromQuote(\'' + escapeHtml(item.item) + '\')">×</button>' +
+        '</div>' +
+        '</div>';
+    });
+    container.innerHTML = html;
+  }
 
     function showNotification(message) {
       var notification = document.createElement('div');
