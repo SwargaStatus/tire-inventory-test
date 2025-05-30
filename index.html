@@ -24,7 +24,7 @@
     .filters select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(46,111,163,0.08)}
     .search-container{flex:1;min-width:320px;max-width:500px;position:relative}
     .search-label{position:absolute;left:16px;top:-8px;background:#fff;padding:0 8px;font-size:13px;color:#495057;font-weight:600;z-index:1}
-    .search-container input{width:100%;padding:14px 20px;border:1.5px solid #e1e5e9;border-radius:12px;font-size:15px;transition:all 0.2s;font-weight:500;background:#fff}
+    .search-container input{width:100%;padding:14px 20px;border:1.5px solid #e1e5e9;border-radius:12px;font-size:16px;transition:all 0.2s;font-weight:500;background:#fff}
     .search-container input::placeholder{color:#9ca3af;font-weight:400}
     .search-container input:hover{border-color:#c1c7ce}
     .search-container input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(46,111,163,0.08)}
@@ -51,20 +51,24 @@
     .quote-counter.pulse{animation:pulse 0.6s ease-out}
     .quote-cta{font-size:12px;opacity:0.9;margin-top:4px;font-weight:normal}
     @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
-    .quantity-controls{display:flex;align-items:center;gap:5px;background:#f8f9fa;border-radius:8px;padding:2px}
-    .qty-btn{width:28px;height:28px;border:none;background:#007bff;color:white;border-radius:6px;cursor:pointer;font-weight:bold;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
-    .qty-btn:hover{background:#0056b3;transform:scale(1.1)}
+    .quantity-controls{display:flex;align-items:center;gap:4px;background:#f8f9fa;border-radius:8px;padding:4px}
+    .qty-btn{width:32px;height:32px;border:none;background:#007bff;color:white;border-radius:6px;cursor:pointer;font-weight:bold;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;line-height:1}
+    .qty-btn:hover{background:#0056b3;transform:scale(1.05)}
     .qty-btn:active{transform:scale(0.95)}
-    .qty-input{width:50px;height:28px;border:1px solid #ddd;border-radius:4px;text-align:center;font-weight:bold;margin:0 2px}
+    .qty-input{width:50px;height:32px;border:1px solid #ddd;border-radius:4px;text-align:center;font-weight:bold;margin:0;font-size:14px}
+    .qty-stock{font-size:12px;color:#666;margin-left:4px;display:flex;align-items:center;font-weight:normal;line-height:32px}
     .notification{position:fixed;top:120px;right:20px;background:linear-gradient(135deg,#27ae60,#2ecc71);color:white;padding:12px 20px;border-radius:8px;z-index:3000;font-weight:500;box-shadow:0 4px 20px rgba(39,174,96,0.3);transform:translateX(400px);transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);max-width:280px}
     .success-notification{background:linear-gradient(135deg,#3498db,#2980b9);padding:20px 25px;border-radius:12px;box-shadow:0 8px 32px rgba(52,152,219,0.4);position:relative;overflow:hidden}
     .success-notification::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(255,255,255,0.1) 10px,rgba(255,255,255,0.1) 20px);animation:confetti 2s linear infinite}
     @keyframes confetti{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
     .quote-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:2000}
-    .quote-modal-content{background:white;margin:5% auto;padding:20px;width:90%;max-width:600px;border-radius:8px;max-height:80vh;overflow-y:auto}
-    .quote-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #eee}
+    .quote-modal-content{background:white;margin:5% auto;padding:20px;width:90%;max-width:600px;border-radius:8px;max-height:80vh;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column}
+    .quote-item{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 0;border-bottom:1px solid #eee;gap:12px}
+    .quote-item-info{flex:1;min-width:0}
+    .quote-item-controls{flex-shrink:0}
     .quote-form{margin-top:20px;padding-top:20px;border-top:2px solid #eee}
-    .quote-form input,.quote-form textarea{width:100%;padding:8px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box}
+    .quote-form input,.quote-form textarea{width:100%;padding:12px;margin-bottom:10px;border:1px solid #ddd;border-radius:4px;box-sizing:border-box;font-size:16px}
+    input,textarea,select{font-size:16px !important}
     .submit-quote{background:#27ae60;color:white;border:none;padding:12px 24px;border-radius:6px;cursor:pointer;font-weight:bold;width:100%}
     .close-modal{float:right;font-size:28px;font-weight:bold;cursor:pointer;color:#aaa}
     .remove-item{background:#e74c3c;color:white;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:12px}
@@ -91,31 +95,28 @@
   }
 }
 
-    @media (max-width:768px){
-      .quote-modal-content{
-        width: calc(100% - 24px); /* 12-px left + right gutter   */
-        margin: 5% auto;          /* still vertically centred    */
-        box-sizing:border-box;    /* so padding doesn’t add size */
-        padding-left:12px;
-        padding-right:12px;
+      @media (max-width:768px){
+        .quote-modal-content{
+          width: calc(100% - 24px);
+          margin: 5% auto;
+          box-sizing:border-box;
+          padding-left:12px;
+          padding-right:12px;
+        }
+        .quote-item{flex-direction:column;align-items:stretch;gap:8px}
+        .quote-item-controls{align-self:flex-start}
+        .quantity-controls{justify-content:flex-start}
       }
-    }
+  
 
-    #quote-items{
-    flex:1 1 auto;
-    overflow-y:auto;            /* already there, keep it      */
-    padding-right:4px;          /* tiny room for scrollbar     */
+  #quote-items{
+  flex:1 1 auto;
+  overflow-y:auto;
+  padding-right:4px;
+  -webkit-overflow-scrolling:touch;
+  min-height:0;
   }
   
-  .quote-item>div:first-child{
-    flex:1 1 60%;               /* text can take multiple lines*/
-    word-break:break-word;
-  }
-  
-  .quote-item{
-    gap:8px;                    /* a little breathing room     */
-    align-items:flex-start;     /* text tops align with buttons*/
-  }
   .quote-form{
     flex:0 0 auto;            /* form stays at the bottom                   */
     padding-bottom:8px;
@@ -133,11 +134,6 @@
     align-items:center;
   }
   
-  .quantity-controls small{
-    font-size:.75rem;      /* a hair smaller looks intentional      */
-    line-height:1;         /* kills extra baseline drift            */
-    align-self:center;     /* centres the “/4” vertically           */
-  }
     body.modal-open{
     overflow:hidden;   /* body can’t scroll, modal can            */
   }
@@ -149,7 +145,7 @@
   <div class="container">
     <div class="header">
       <h1><img src="Logo.png" alt="Sturgeon Tire" class="company-logo" onerror="this.style.display='none'">Sturgeon Tire Bargain Bin</h1>
-      <div class="update-time">Updated: 2025-05-30, 10:38 a.m.</div>
+      <div class="update-time">Updated: 2025-05-30, 10:51 a.m.</div>
     </div>
     
     <div class="stats">
@@ -355,14 +351,20 @@
       var html = '<h3>Items:</h3>';
       quoteItems.forEach(function(item) {
         html += '<div class="quote-item">' +
-          '<div><strong>' + escapeHtml(item.manufacturer) + ' ' + escapeHtml(item.model) + '</strong><br>Item: ' + escapeHtml(item.item) + ' • $' + item.sale + ' each</div>' +
+          '<div class="quote-item-info">' +
+          '<strong>' + escapeHtml(item.manufacturer) + ' ' + escapeHtml(item.model) + '</strong><br>' +
+          'Item: ' + escapeHtml(item.item) + ' • $' + item.sale + ' each' +
+          '</div>' +
+          '<div class="quote-item-controls">' +
           '<div class="quantity-controls">' +
           '<button class="qty-btn" onclick="updateQuantity(\'' + escapeHtml(item.item) + '\', ' + (item.quantity - 1) + ')">−</button>' +
           '<input type="number" class="qty-input" min="1" max="' + item.stock + '" value="' + item.quantity + '" onchange="updateQuantity(\'' + escapeHtml(item.item) + '\', this.value)">' +
           '<button class="qty-btn" onclick="updateQuantity(\'' + escapeHtml(item.item) + '\', ' + (item.quantity + 1) + ')">+</button>' +
-          '<small style="margin-left:8px">/ ' + item.stock + '</small>' +
+          '<span class="qty-stock">/ ' + item.stock + '</span>' +
+          '</div>' +
           '<button class="remove-item" onclick="removeFromQuote(\'' + escapeHtml(item.item) + '\')">×</button>' +
-          '</div></div>';
+          '</div>' +
+          '</div>';
       });
       container.innerHTML = html;
     }
@@ -401,35 +403,41 @@
       var notes = document.getElementById('customer-notes').value;
       
       if (!name || !email) {
-        alert('Please fill in your name and email.');
+        showNotification('❌ Please fill in your name and email');
+        if (!name) document.getElementById('customer-name').focus();
+        else if (!email) document.getElementById('customer-email').focus();
+        return;
+      }
+
+      var emailRegex = /^[^s@]+@[^s@]+.[^s@]+$/;
+      if (!emailRegex.test(email)) {
+        showNotification('❌ Please enter a valid email address');
+        document.getElementById('customer-email').focus();
         return;
       }
       
       var submitBtn = document.querySelector('.submit-quote');
-      submitBtn.innerHTML = 'Sending...';
+      submitBtn.innerHTML = 'Sending Quote...';
       submitBtn.disabled = true;
       
       var tireDetails = quoteItems.map(function(item, index) {
-        return (index + 1) + '. Item: ' + item.item + ' - Qty: ' + item.quantity;
+        return (index + 1) + '. ' + item.manufacturer + ' ' + item.model + ' (Item: ' + item.item + ') - Qty: ' + item.quantity + ' @ $' + item.sale + ' each';
       }).join('\n');
       
-      var quoteSummary = 'TIRE QUOTE REQUEST\n\n' +
-        'CUSTOMER:\n' +
-        'Name: ' + name + '\n' +
-        'Email: ' + email + '\n' +
-        'Phone: ' + (phone || 'Not provided') + '\n' +
-        'Company: ' + (company || 'Not provided') + '\n\n' +
-        'ITEMS:\n' + tireDetails + '\n\n' +
-        'NOTES: ' + (notes || 'None');
+      var totalValue = quoteItems.reduce(function(sum, item) {
+        return sum + (item.sale * item.quantity);
+      }, 0);
       
       var formData = new FormData();
       formData.append('name', name);
       formData.append('email', email);
-      formData.append('phone', phone);
-      formData.append('company', company);
-      formData.append('items', tireDetails);
-      formData.append('message', quoteSummary);
-      formData.append('_subject', 'Tire Quote - ' + name);
+      formData.append('phone', phone || 'Not provided');
+      formData.append('company', company || 'Not provided');
+      formData.append('notes', notes || 'No additional notes');
+      formData.append('tire_items', tireDetails);
+      formData.append('total_items', quoteItems.length);
+      formData.append('estimated_total', '$' + totalValue.toFixed(2));
+      formData.append('_subject', 'Tire Quote Request - ' + name);
       formData.append('_replyto', email);
       
       fetch('https://formspree.io/f/xdkgqyzr', {
@@ -442,7 +450,9 @@
           submitBtn.innerHTML = '🎉 Quote Sent Successfully!';
           submitBtn.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
           showSuccessNotification('🎉 Quote sent successfully! We will contact you soon with pricing and availability.');
-          confetti({ particleCount: 140, spread: 70, origin: { y: 0.6 }, zIndex: 4000 });
+          if (typeof confetti !== 'undefined') {
+            confetti({ particleCount: 140, spread: 70, origin: { y: 0.6 }, zIndex: 4000 });
+          }
           setTimeout(function() {
             quoteItems = [];
             updateQuoteCounter();
@@ -450,21 +460,26 @@
             submitBtn.innerHTML = 'Request Quote';
             submitBtn.style.background = '';
             submitBtn.disabled = false;
+            document.getElementById('customer-name').value = '';
+            document.getElementById('customer-email').value = '';
+            document.getElementById('customer-phone').value = '';
+            document.getElementById('customer-company').value = '';
+            document.getElementById('customer-notes').value = '';
           }, 3000);
         } else {
-          var subject = 'Tire Quote - ' + name;
-          var mailtoLink = 'mailto:nileshn@sturgeontire.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(quoteSummary);
-          window.open(mailtoLink, '_blank');
-          submitBtn.innerHTML = 'Request Quote';
-          submitBtn.disabled = false;
+          throw new Error('Form submission failed');
         }
       })
-      .catch(function() {
-        var subject = 'Tire Quote - ' + name;
-        var mailtoLink = 'mailto:nileshn@sturgeontire.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(quoteSummary);
-        window.open(mailtoLink, '_blank');
-        submitBtn.innerHTML = 'Request Quote';
+      .catch(function(error) {
+        console.log('Form submission error:', error);
+        submitBtn.innerHTML = 'Try Again';
+        submitBtn.style.background = '#e74c3c';
         submitBtn.disabled = false;
+        showNotification('❌ Please try again or call (204) 985-4040');
+        setTimeout(function() {
+          submitBtn.innerHTML = 'Request Quote';
+          submitBtn.style.background = '';
+        }, 3000);
       });
     }
 
